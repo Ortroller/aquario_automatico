@@ -23,6 +23,12 @@ float TemperaturaChecker::check_temperature(){
     temperatura.requestTemperaturesByIndex(0);
     float temp_C = temperatura.getTempCByIndex(0);
 
+    while(temp_C < -100){ // ERRO NA COLETA DE TEMPERATURA
+        temperatura.requestTemperaturesByIndex(0);
+        temp_C = temperatura.getTempCByIndex(0);
+        Serial.println("Erro");
+    }
+
 
     if(cooler && temp_C <= maxBaseTemp - offset_temperatura){
         cooler = false;

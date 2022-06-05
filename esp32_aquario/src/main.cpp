@@ -1,18 +1,29 @@
 #include <Arduino.h>
 #include "ControleTemp/controleTemp.h"
+#include "ControleBoia/nivelC.h"
 
 // endereco do sensor 0x28
-#define sensor_temp 13
-#define test_led 4
+#define sensor_temp 12
+#define bomba 13
+#define sensor_boia 2
 
 TemperaturaChecker Controle(sensor_temp);
+nivelControlador aBoia(sensor_boia, bomba);
+
+
+void controladoraNivel(){
+    
+    digitalWrite(aBoia.getBombaPin(), !aBoia.atualizaBombaStatus()); 
+    // Serial.println(aBoia.verBombaStatus());
+
+}
+
 
 void setup() {
 
   Serial.begin(9600);
-  pinMode(test_led, OUTPUT);
   Serial.println('\n');
-
+  attachInterrupt( digitalPinToInterrupt(aBoia.getSensorPin()), controladoraNivel, CHANGE);
   // temperatura.requestTemperatures();
 }
 
