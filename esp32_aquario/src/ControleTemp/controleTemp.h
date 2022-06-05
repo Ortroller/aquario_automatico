@@ -1,5 +1,5 @@
-#ifndef controleTemp.h
-#define controleTemp.h
+#ifndef controleTemp_h
+#define controleTemp_h
 
 /* ========== Libs ========== */
 #include "OneWire/OneWire.h"
