@@ -84,7 +84,7 @@ bool TemperaturaChecker::setMaxTemperatura(unsigned char maximo){
 }
 
 
-bool TemperaturaChecker::setLimitesTemperatura(unsigned char minimo, unsigned char maximo, unsigned char offset = 1){
+bool TemperaturaChecker::setLimitesTemperatura(unsigned char minimo, unsigned char maximo, unsigned char offset){
 
     if( (maximo == minimo) || (maximo < minimo) || (minimo > maximo) || (maximo <= 0) ||  (minimo <= 0)){
         return false;
