@@ -1,33 +1,33 @@
-#include <Arduino.h>
-#include "ControleTemp/controleTemp.h"
-#include "ControleBoia/nivelC.h"
+// Inclui as bibliotecas
+#include "controleLed.h"
 
-// endereco do sensor 0x28
-#define sensor_temp 12
-#define bomba 13
-#define sensor_boia 2
+// TODO: Verificar o pq está dando segmentation fault ao juntar os dois códigos
+// DONE: RTC c/ controle de iluminação funcionando p/ uma faixa de horário
 
-TemperaturaChecker Controle(sensor_temp);
-nivelControlador aBoia(sensor_boia, bomba);
+#define hrOn 8
+#define minOn 30
+#define hrOff 18
+#define minOff 45
+// #define hrOn 10
+// #define minOn 0
+// #define hrOff 10
+// #define minOff 5
+#define rele 26
 
+// char daysOfTheWeek[7][12] = {"Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"}; // Dias da semana
 
-void controladoraNivel(){
-    
-    digitalWrite(aBoia.getBombaPin(), !aBoia.atualizaBombaStatus()); 
-    // Serial.println(aBoia.verBombaStatus());
+ControleLED ctlLed(hrOn, minOn, hrOff, minOff, rele);
 
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(rele, OUTPUT);
+  digitalWrite(rele,LOW);
+  ctlLed.setupRTC();
 }
 
-
-void setup() {
-
-  Serial.begin(9600);
-  Serial.println('\n');
-  attachInterrupt( digitalPinToInterrupt(aBoia.getSensorPin()), controladoraNivel, CHANGE);
-  // temperatura.requestTemperatures();
-}
-
-void loop() {
-  Serial.println(Controle.check_temperature());
+void loop()
+{
+  ctlLed.checkLed();
   delay(500);
 }
