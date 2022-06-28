@@ -1,33 +1,44 @@
 // Inclui as bibliotecas
 #include "controleLed.h"
-
-// TODO: Verificar o pq está dando segmentation fault ao juntar os dois códigos
-// DONE: RTC c/ controle de iluminação funcionando p/ uma faixa de horário
+#include "controleTemp.h"
+#include "nivelC.h"
 
 #define hrOn 8
 #define minOn 30
 #define hrOff 18
 #define minOff 45
-// #define hrOn 10
-// #define minOn 0
-// #define hrOff 10
-// #define minOff 5
-#define rele 26
+#define releLed 26
+#define sensor_temp 25
+#define bomba 33
+#define sensor_boia 32
 
-// char daysOfTheWeek[7][12] = {"Domingo", "Segunda", "Terca", "Quarta", "Quinta", "Sexta", "Sabado"}; // Dias da semana
+ControleLED ctlLed(hrOn, minOn, hrOff, minOff, releLed);
 
-ControleLED ctlLed(hrOn, minOn, hrOff, minOff, rele);
+TemperaturaChecker Controle(sensor_temp);
+nivelControlador aBoia(sensor_boia, bomba);
+
+void controladoraNivel()
+{
+
+  digitalWrite(aBoia.getBombaPin(), !aBoia.atualizaBombaStatus());
+  // Serial.println(aBoia.verBombaStatus());
+}
 
 void setup()
 {
   Serial.begin(115200);
-  pinMode(rele, OUTPUT);
-  digitalWrite(rele,LOW);
+  Serial.println('\n');
+  attachInterrupt( digitalPinToInterrupt(aBoia.getSensorPin()), controladoraNivel, CHANGE);
+
+  pinMode(releLed, OUTPUT);
+  digitalWrite(releLed, LOW);
   ctlLed.setupRTC();
 }
 
 void loop()
 {
+  Serial.println(Controle.check_temperature());
+  delay(500);
   ctlLed.checkLed();
   delay(500);
 }

@@ -18,8 +18,8 @@ void ControleLED::setupRTC(){
         while (1)
         ; // Trava o programa
     }
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
-    delay(100); // 100 Milissegundos
+    // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // delay(100); // 100 Milissegundos
 }
 
 bool ControleLED::checkLed(){
@@ -36,7 +36,7 @@ bool ControleLED::checkLed(){
         Caso contrário desliga a luz, ou seja, HH:mm diferente do intervalo de luz on.
     ------------------------------------------------------------------------------------------------- */
     
-    if((now.hour() >= hrTurnOn && now.minute() >= minTurnOn) && (now.hour() <= hrTurnOff && now.minute() <= minTurnOff)) {
+    if((now.hour() >= hrTurnOn && now.minute() >= minTurnOn) || (now.hour() <= hrTurnOff && now.minute() < minTurnOff)) {
         digitalWrite(releLed,HIGH);
         Serial.println("Luz ON");
         return true;

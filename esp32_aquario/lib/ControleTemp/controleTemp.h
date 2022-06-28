@@ -2,13 +2,13 @@
 #define controleTemp_h
 
 /* ========== Libs ========== */
-#include "OneWire/OneWire.h"
-#include "OneWire/DallasTemperature.h"
+#include "OneWire.h"
+#include "DallasTemperature.h"
 #include <Arduino.h>
 
 /* ========== PINOS ========== */
-#define resistenciaPin 7
-#define coolerPin 8
+#define resistenciaPin 27
+#define coolerPin 14
 
 /* ========== Valores ========== */
 #define offset_TemperaturasGerais 4
