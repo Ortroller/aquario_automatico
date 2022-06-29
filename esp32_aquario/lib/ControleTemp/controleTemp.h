@@ -14,7 +14,7 @@
 // Parâmetros do termistor
 #define RT0 10500   // Ω
 #define B 3600      // K
-#define VCC 3.3    //Supply voltage
+#define VCC 5    //Supply voltage
 #define R 1500  //R=10KΩ
 #define  T0 (25 + 273.15)
 
