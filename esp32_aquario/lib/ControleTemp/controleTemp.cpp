@@ -23,7 +23,7 @@ float TemperaturaChecker::check_temperature(){
         caso os parametros sejam satisfeitos
     */
 
-    float VRT = (3.3 / 1023.00) * analogRead(SensorPin);      //Conversion to voltage
+    float VRT = (5.00 / 1023.00) * analogRead(SensorPin);      //Conversion to voltage
     float RT = VRT / ((VCC - VRT) / R);               //Resistance of RT
     float ln = log(RT / RT0);
     float TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
