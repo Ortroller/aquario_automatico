@@ -22,10 +22,18 @@ float TemperaturaChecker::check_temperature(){
         Retorna a temperatura obtida no momento da verificacao e controla os atuadores (coolerPin, resistenciaPin)
         caso os parametros sejam satisfeitos
     */
+    
+    float VRT = (VCC / 4094.00) * analogRead(SensorPin);      //Conversion to voltage
 
-    float VRT = (5.00 / 1023.00) * analogRead(SensorPin);      //Conversion to voltage
+    Serial.println(VRT);
+
     float RT = VRT / ((VCC - VRT) / R);               //Resistance of RT
+
+    Serial.println(RT);
+
     float ln = log(RT / RT0);
+
+    Serial.println(ln);
     float TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
     TX = TX -  273.15;
 
