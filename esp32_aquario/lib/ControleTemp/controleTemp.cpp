@@ -18,6 +18,10 @@ TemperaturaChecker::TemperaturaChecker(unsigned char SensorPin){
 }
 
 float TemperaturaChecker::check_temperature(){  
+    /* 
+        Retorna a temperatura obtida no momento da verificacao e controla os atuadores (coolerPin, resistenciaPin)
+        caso os parametros sejam satisfeitos
+    */
 
     float VRT = (5.00 / 1023.00) * analogRead(SensorPin);      //Conversion to voltage
     float RT = VRT / ((VCC - VRT) / R);               //Resistance of RT
