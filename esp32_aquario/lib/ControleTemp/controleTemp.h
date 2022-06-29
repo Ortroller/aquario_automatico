@@ -2,16 +2,21 @@
 #define controleTemp_h
 
 /* ========== Libs ========== */
-#include "OneWire.h"
-#include "DallasTemperature.h"
 #include <Arduino.h>
 
 /* ========== PINOS ========== */
-#define resistenciaPin 27
-#define coolerPin 14
+#define resistenciaPin 34
+#define coolerPin 35
 
 /* ========== Valores ========== */
 #define offset_TemperaturasGerais 4
+
+// Parâmetros do termistor
+#define RT0 10000   // Ω
+#define B 3600      // K
+#define VCC 5    //Supply voltage
+#define R 1500  //R=10KΩ
+#define  T0 (25 + 273.15)
 
 
 class TemperaturaChecker{
@@ -19,13 +24,11 @@ private:
     unsigned char minBaseTemp;
     unsigned char maxBaseTemp;
     unsigned char offset_temperatura;
-    OneWire sens;
-    DallasTemperature temperatura;
-
+    unsigned char SensorPin;
     bool resistence;
     bool cooler;
 public:
-    TemperaturaChecker(byte SensorPin);
+    TemperaturaChecker(unsigned char SensorPin);
     float check_temperature();
     bool setLimitesTemperatura(unsigned char minimo, unsigned char maximo, unsigned char offset = 1);
     bool setMaxTemperatura(unsigned char maximo);

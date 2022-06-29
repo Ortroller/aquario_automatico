@@ -4,13 +4,12 @@
     TODO: Implementar validacoes mais precisas para valores considerados validos para funcoes de setar limites de temperaturas (setLimitesTemperatura)
 */
 
-TemperaturaChecker::TemperaturaChecker(byte SensorPin){
-    sens = OneWire(SensorPin);
-    temperatura = DallasTemperature(&sens);
-
+TemperaturaChecker::TemperaturaChecker(unsigned char SensorPin){
     pinMode(resistenciaPin, OUTPUT);
     pinMode(coolerPin, OUTPUT);
 
+    pinMode(SensorPin, INPUT); // Pino do NTC
+    this->SensorPin = SensorPin;
     minBaseTemp = 24;
     maxBaseTemp = 28;
     offset_temperatura = 1;
@@ -18,27 +17,23 @@ TemperaturaChecker::TemperaturaChecker(byte SensorPin){
     cooler = false;
 }
 
-float TemperaturaChecker::check_temperature(){
+float TemperaturaChecker::check_temperature(){  
 
-    temperatura.requestTemperaturesByIndex(0);
-    float temp_C = temperatura.getTempCByIndex(0);
+    float VRT = (5.00 / 1023.00) * analogRead(SensorPin);      //Conversion to voltage
+    float RT = VRT / ((VCC - VRT) / R);               //Resistance of RT
+    float ln = log(RT / RT0);
+    float TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
+    TX = TX -  273.15;
 
-    while(temp_C < -100){ // ERRO NA COLETA DE TEMPERATURA
-        temperatura.requestTemperaturesByIndex(0);
-        temp_C = temperatura.getTempCByIndex(0);
-        Serial.println("Erro");
-    }
-
-
-    if(cooler && temp_C <= maxBaseTemp - offset_temperatura){
+    if(cooler && TX <= maxBaseTemp - offset_temperatura){
         cooler = false;
-    }else if(resistence && temp_C >= minBaseTemp + offset_temperatura){
+    }else if(resistence && TX >= minBaseTemp + offset_temperatura){
         resistence = false;
     }else{
-        if(temp_C < minBaseTemp){ // Se temperatura for menor que a minima definida
+        if(TX < minBaseTemp){ // Se temperatura for menor que a minima definida
             cooler = false; // cooler desliga
             resistence = true; // aquecedor lig
-        }else if( temp_C > maxBaseTemp){
+        }else if( TX > maxBaseTemp){
             resistence = false;
             cooler = true;
         }
@@ -46,7 +41,8 @@ float TemperaturaChecker::check_temperature(){
     
     digitalWrite(coolerPin, !cooler);
     digitalWrite(resistenciaPin, !resistence);
-    return temp_C;
+
+    return TX;
 }
 
 bool TemperaturaChecker::setMinTemperatura(unsigned char minimo){

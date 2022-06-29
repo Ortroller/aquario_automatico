@@ -3,30 +3,31 @@
 #include "controleTemp.h"
 #include "nivelC.h"
 
+/* ---------- Configuracao das horas --------------- */
 #define hrOn 8
 #define minOn 30
 #define hrOff 18
 #define minOff 45
+
+/* ---------- Pinos --------------- */
 #define releLed 26
-#define sensor_temp 25
-#define bomba 33
-#define sensor_boia 32
+#define sensor_temp 12
+#define bomba 4 // Pino de saida de controle atuador
+#define sensor_boia 5
 
 ControleLED ctlLed(hrOn, minOn, hrOff, minOff, releLed);
 
 TemperaturaChecker Controle(sensor_temp);
 nivelControlador aBoia(sensor_boia, bomba);
 
-void controladoraNivel()
-{
-
+void controladoraNivel(){
   digitalWrite(aBoia.getBombaPin(), !aBoia.atualizaBombaStatus());
   // Serial.println(aBoia.verBombaStatus());
 }
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
   Serial.println('\n');
   attachInterrupt( digitalPinToInterrupt(aBoia.getSensorPin()), controladoraNivel, CHANGE);
 
@@ -38,7 +39,7 @@ void setup()
 void loop()
 {
   Serial.println(Controle.check_temperature());
-  delay(500);
-  ctlLed.checkLed();
+  // ctlLed.checkLed();
+  Serial.println();
   delay(500);
 }
