@@ -23,19 +23,17 @@ float TemperaturaChecker::check_temperature(){
         caso os parametros sejam satisfeitos
     */
     
-    float VRT = (VCC / 4094.00) * analogRead(SensorPin);      //Conversion to voltage
+    float Vout = analogRead(SensorPin) * (Vs/adcMax);
+    float Rt = R1 * (Vout+0.1) / (Vs - (Vout+0.1));
 
-    Serial.println(VRT);
+    Serial.println(analogRead(SensorPin));
+    Serial.println(Vout+0.1);
+    Serial.println(Rt);
+    Rt += 2000;
 
-    float RT = VRT / ((VCC - VRT) / R);               //Resistance of RT
-
-    Serial.println(RT);
-
-    float ln = log(RT / RT0);
-
-    Serial.println(ln);
-    float TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
-    TX = TX -  273.15;
+    float T = 1/(1/To + log(Rt/Ro)/Beta);    // Temperature in Kelvin
+    float TX = T - 273.15;                   // Celsius
+ 
 
     if(cooler && TX <= maxBaseTemp - offset_temperatura){
         cooler = false;

@@ -8,6 +8,7 @@ ControleLED::ControleLED(unsigned char hOn, unsigned char minOn, unsigned char h
     hrTurnOff = hOff;
     minTurnOff = minOff;
     releLed = rele;
+    pinMode(releLed, OUTPUT);
 }
 
 void ControleLED::setupRTC(){

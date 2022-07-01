@@ -13,7 +13,7 @@
 #define releLed 26
 #define sensor_temp 25
 #define bomba 4 // Pino de saida de controle atuador
-#define sensor_boia 5
+#define sensor_boia 2
 
 ControleLED ctlLed(hrOn, minOn, hrOff, minOff, releLed);
 

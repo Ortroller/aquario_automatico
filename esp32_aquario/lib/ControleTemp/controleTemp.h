@@ -5,18 +5,19 @@
 #include <Arduino.h>
 
 /* ========== PINOS ========== */
-#define resistenciaPin 34
-#define coolerPin 35
+#define resistenciaPin 32
+#define coolerPin 33
 
 /* ========== Valores ========== */
 #define offset_TemperaturasGerais 4
 
 // Parâmetros do termistor
-#define RT0 10500   // Ω
-#define B 3600      // K
-#define VCC 3.3    //Supply voltage
-#define R 1500  //R=10KΩ
-#define  T0 (25 + 273.15)
+#define R1 1500.0   // voltage divider resistor value
+#define Beta 4400.0  // Beta value
+#define To 298.15    // Temperature in Kelvin for 25 degree Celsius
+#define Ro 10000.0   // Resistance of Thermistor at 25 degree Celsius
+#define adcMax 4095.0   // ADC resolution 10-bit (0-1023)
+#define Vs 3.3          // supply voltage
 
 
 class TemperaturaChecker{
